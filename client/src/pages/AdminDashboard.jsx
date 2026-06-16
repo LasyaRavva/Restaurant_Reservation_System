@@ -164,13 +164,13 @@ export default function AdminDashboard() {
       </section>
 
       <section className="dashboard-links admin-quick-links">
-        <Link to="/admin/reservations/analytics" className="dash-link-card">
+        {/* <Link to="/admin/reservations/analytics" className="dash-link-card">
           <span className="dash-link-icon">RS</span>
           <div>
             <strong>My reservation analytics</strong>
             <p>Open booking trends, status totals, and table demand.</p>
           </div>
-        </Link>
+        </Link> */}
       </section>
     </main>
   )

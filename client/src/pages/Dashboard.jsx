@@ -17,16 +17,18 @@ export default function Dashboard() {
         <p>Here's an overview of your account.</p>
       </div>
 
-      <div className="dashboard-stats">
-        <div className="stat-card">
-          <span className="stat-label">Upcoming bookings</span>
-          <span className="stat-value">{loading ? '-' : upcoming.length}</span>
+      {!isAdmin && (
+        <div className="dashboard-stats">
+          <div className="stat-card">
+            <span className="stat-label">Upcoming bookings</span>
+            <span className="stat-value">{loading ? '-' : upcoming.length}</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Total reservations</span>
+            <span className="stat-value">{loading ? '-' : reservations.length}</span>
+          </div>
         </div>
-        <div className="stat-card">
-          <span className="stat-label">Total reservations</span>
-          <span className="stat-value">{loading ? '-' : reservations.length}</span>
-        </div>
-      </div>
+      )}
 
       <div className="dashboard-links">
         {isAdmin && (
@@ -44,6 +46,15 @@ export default function Dashboard() {
             <div>
               <strong>My reservation analytics</strong>
               <p>Open booking trends, status totals, and table demand.</p>
+            </div>
+          </Link>
+        )}
+        {!isAdmin && (
+          <Link to="/dashboard/reservations" className="dash-link-card">
+            <span className="dash-link-icon">🗓</span>
+            <div>
+              <strong>My reservations</strong>
+              <p>See upcoming bookings and past reservations</p>
             </div>
           </Link>
         )}
