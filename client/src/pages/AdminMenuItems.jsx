@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import DropdownSelect from '../components/common/DropdownSelect'
 import { useAdminConsole } from '../hooks/useAdminConsole'
 
 const DEFAULT_MENU_ITEM = {
@@ -20,6 +21,11 @@ const CATEGORY_OPTIONS = [
   'desserts',
   'drinks'
 ]
+
+function truncateLabel(value, maxLength = 28) {
+  if (!value || value.length <= maxLength) return value
+  return `${value.slice(0, maxLength - 1).trimEnd()}…`
+}
 
 export default function AdminMenuItems() {
   const {
@@ -137,11 +143,11 @@ export default function AdminMenuItems() {
             Add, edit, and delete menu items for each restaurant from one place.
           </p>
         </div>
-        <div className="admin-hero-card">
+        {/* <div className="admin-hero-card">
           <span className="admin-hero-label">Page</span>
           <strong>Menu management</strong>
           <p>Restaurant-linked items only.</p>
-        </div>
+        </div> */}
       </section>
 
       <section className="admin-panel">
@@ -164,14 +170,15 @@ export default function AdminMenuItems() {
           <div className="form-row">
             <div className="form-group">
               <label>Restaurant</label>
-              <select name="restaurant_id" value={menuForm.restaurant_id} onChange={handleMenuChange} required>
-                <option value="">Select restaurant</option>
-                {restaurants.map(restaurant => (
-                  <option key={restaurant.id} value={restaurant.id}>
-                    {restaurant.name} - {restaurant.city}
-                  </option>
-                ))}
-              </select>
+              <DropdownSelect
+                value={menuForm.restaurant_id}
+                placeholder="Select restaurant"
+                options={restaurants.map(restaurant => ({
+                  value: restaurant.id,
+                  label: truncateLabel(`${restaurant.name} - ${restaurant.city}`)
+                }))}
+                onChange={value => setMenuForm(prev => ({ ...prev, restaurant_id: value }))}
+              />
             </div>
             <div className="form-group">
               <label>Name</label>
@@ -191,13 +198,12 @@ export default function AdminMenuItems() {
             </div>
             <div className="form-group">
               <label>Category</label>
-              <select name="category" value={menuForm.category} onChange={handleMenuChange} required>
-                {CATEGORY_OPTIONS.map(category => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
+              <DropdownSelect
+                value={menuForm.category}
+                placeholder="Select category"
+                options={CATEGORY_OPTIONS.map(category => ({ value: category, label: category }))}
+                onChange={value => setMenuForm(prev => ({ ...prev, category: value }))}
+              />
             </div>
           </div>
 
@@ -254,15 +260,19 @@ export default function AdminMenuItems() {
             <h2>Saved menu items</h2>
             <p>Use edit or delete on any item below.</p>
           </div>
-          <div className="form-group" style={{ minWidth: 220, marginBottom: 0 }}>
-            <select value={restaurantFilter} onChange={e => setRestaurantFilter(e.target.value)}>
-              <option value="all">All restaurants</option>
-              {restaurants.map(restaurant => (
-                <option key={restaurant.id} value={restaurant.id}>
-                  {restaurant.name}
-                </option>
-              ))}
-            </select>
+          <div className="form-group menu-filter-select">
+            <DropdownSelect
+              value={restaurantFilter}
+              placeholder="All restaurants"
+              options={[
+                { value: 'all', label: 'All restaurants' },
+                ...restaurants.map(restaurant => ({
+                  value: restaurant.id,
+                  label: truncateLabel(restaurant.name)
+                }))
+              ]}
+              onChange={value => setRestaurantFilter(value)}
+            />
           </div>
         </div>
 

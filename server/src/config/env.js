@@ -4,16 +4,26 @@ dotenv.config()
 
 const required = ['SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY']
 
+function normalizeOrigin(value) {
+  return value?.trim().replace(/\/+$/, '')
+}
+
 for (const key of required) {
   if (!process.env[key]) {
     console.warn(`[env] Missing required variable: ${key}`)
   }
 }
 
+const clientOrigins = (process.env.CLIENT_ORIGIN || 'http://localhost:5173')
+  .split(',')
+  .map(normalizeOrigin)
+  .filter(Boolean)
+
 export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
   port: Number(process.env.PORT || 5000),
-  clientOrigin: process.env.CLIENT_ORIGIN || 'http://localhost:5173',
+  clientOrigin: clientOrigins[0] || 'http://localhost:5173',
+  clientOrigins,
   supabaseUrl: process.env.SUPABASE_URL || '',
   supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY || '',
   paymentProvider: process.env.PAYMENT_PROVIDER || 'stripe',

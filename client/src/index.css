@@ -238,6 +238,7 @@ input, select, textarea {
 .form-group select,
 .form-group textarea {
   width: 100%;
+  min-width: 0;
   padding: 10px 14px;
   border: 1.5px solid var(--clr-border);
   border-radius: var(--radius-md);
@@ -246,6 +247,212 @@ input, select, textarea {
   font-size: 0.95rem;
   transition: border-color var(--transition), box-shadow var(--transition);
   outline: none;
+}
+
+.form-group input[type="date"] {
+  padding: 9px 12px;
+}
+
+.calendar-picker {
+  position: relative;
+  width: 100%;
+  max-width: 270px;
+}
+
+.calendar-field {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--clr-border);
+  border-radius: 16px;
+  background: var(--clr-surface);
+  color: var(--clr-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.95rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.calendar-field.selected {
+  color: var(--clr-text-primary);
+}
+
+.calendar-field.open {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(200, 75, 47, 0.08);
+}
+
+.calendar-field svg {
+  width: 18px;
+  height: 18px;
+  color: var(--clr-text-muted);
+  flex-shrink: 0;
+}
+
+.calendar-popover {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 320px;
+  max-width: calc(100vw - 24px);
+  padding: 10px 12px 12px;
+  background: var(--clr-surface);
+  border-radius: 14px;
+  border: 1px solid var(--clr-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.calendar-header strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--clr-text-primary);
+}
+
+.calendar-nav {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-text-muted);
+  border-radius: 999px;
+}
+
+.calendar-nav:hover {
+  background: var(--clr-accent-light);
+  color: var(--clr-accent);
+}
+
+.calendar-nav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-weekdays {
+  margin-bottom: 6px;
+}
+
+.calendar-weekdays span {
+  text-align: center;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--clr-text-muted);
+  padding: 5px 0;
+}
+
+.calendar-grid {
+  gap: 4px;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--clr-text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-day:hover:not(:disabled) {
+  background: var(--clr-accent-light);
+}
+
+.calendar-day.selected {
+  background: var(--clr-accent);
+  color: #fff;
+}
+
+.calendar-day.outside {
+  color: var(--clr-text-muted);
+}
+
+.calendar-day:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dropdown-select {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.dropdown-select-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  background: var(--clr-surface);
+  color: var(--clr-text-primary);
+  font-size: 0.95rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.dropdown-select-trigger:hover {
+  border-color: var(--clr-accent);
+}
+
+.dropdown-select-trigger:focus {
+  border-color: var(--clr-accent);
+  box-shadow: 0 0 0 3px rgba(200, 75, 47, 0.1);
+  outline: none;
+}
+
+.dropdown-select-trigger svg {
+  width: 18px;
+  height: 18px;
+  color: var(--clr-text-muted);
+  flex-shrink: 0;
+}
+
+.dropdown-select-menu {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--clr-surface);
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  max-height: 240px;
+  overflow: auto;
+  padding: 6px;
+}
+
+.dropdown-select-option {
+  width: 100%;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--clr-text-primary);
+}
+
+.dropdown-select-option:hover,
+.dropdown-select-option.active {
+  background: var(--clr-accent-light);
 }
 
 .form-group input:focus,
@@ -311,7 +518,7 @@ input, select, textarea {
   position: sticky;
   top: 0;
   z-index: 100;
-  height: var(--nav-height);
+  min-height: var(--nav-height);
   background: rgba(247, 245, 242, 0.92);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--clr-border);
@@ -336,6 +543,24 @@ input, select, textarea {
   gap: 4px;
 }
 
+.navbar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-md);
+  color: var(--clr-text-primary);
+  background: var(--clr-surface);
+  margin-left: auto;
+}
+
+.navbar-toggle svg {
+  width: 22px;
+  height: 22px;
+}
+
 .navbar-links a {
   font-size: 0.9rem;
   font-weight: 500;
@@ -350,14 +575,24 @@ input, select, textarea {
   background: var(--clr-surface);
 }
 
+.navbar-link.active {
+  color: var(--clr-text-primary);
+  background: rgba(200, 75, 47, 0.08);
+}
+
 .navbar-links .btn-primary {
   margin-left: 8px;
   padding: 8px 18px;
+  color: #fff;
 }
 
 .navbar-links .btn-ghost {
   padding: 8px 14px;
   border: none;
+}
+
+.navbar-mobile {
+  display: none;
 }
 
 
@@ -1594,8 +1829,79 @@ input, select, textarea {
 @media (max-width: 768px) {
   :root { --side-pad: 16px; }
 
-  .navbar-links a:not(.btn-primary):not(.btn-ghost) {
+  .navbar-toggle {
+    display: inline-flex;
+  }
+
+  .navbar-links {
     display: none;
+  }
+
+  .navbar-mobile {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: rgba(247, 245, 242, 0.98);
+    border-bottom: 1px solid var(--clr-border);
+    box-shadow: var(--shadow-md);
+    padding: 0.75rem var(--side-pad) 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition: max-height 220ms ease, opacity 180ms ease, transform 180ms ease;
+  }
+
+  .navbar-mobile.open {
+    display: flex;
+    max-height: 80vh;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .navbar-mobile a,
+  .navbar-mobile button {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .navbar-mobile a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--clr-text-secondary);
+    padding: 10px 12px;
+    border-radius: var(--radius-md);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .navbar-mobile a:hover {
+    color: var(--clr-text-primary);
+    background: var(--clr-surface);
+  }
+
+  .navbar-mobile .navbar-link.active {
+    color: var(--clr-text-primary);
+    background: rgba(200, 75, 47, 0.08);
+  }
+
+  .navbar-mobile .btn-primary,
+  .navbar-mobile .btn-ghost {
+    margin-top: 0.25rem;
+    padding: 10px 12px;
+    border: 1px solid var(--clr-border);
+  }
+
+  .navbar-mobile .btn-primary {
+    color: #fff;
+  }
+
+  .navbar-mobile-signout {
+    background: transparent;
   }
 
   .hero { padding: 2.5rem 0 2rem; }
@@ -1603,6 +1909,14 @@ input, select, textarea {
   .detail-hero { height: 240px; }
 
   .booking-card { padding: 1.75rem; }
+
+  .calendar-picker {
+    max-width: 100%;
+  }
+
+  .calendar-popover {
+    width: min(320px, calc(100vw - 20px));
+  }
 
   .auth-card { padding: 1.75rem; }
 
@@ -1615,6 +1929,26 @@ input, select, textarea {
   .admin-hero { align-items: flex-start; }
 
   .confirmation-grid { grid-template-columns: 1fr 1fr; }
+
+  .form-group select,
+  .dropdown-select-trigger,
+  .form-group input[type="date"] {
+    font-size: 0.9rem;
+    padding: 9px 12px;
+  }
+
+  .menu-filter-select {
+    width: 100%;
+  }
+
+  .menu-filter-select .dropdown-select {
+    width: 100%;
+  }
+
+  .booking-form .form-row,
+  .admin-form .form-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 480px) {
@@ -1625,4 +1959,16 @@ input, select, textarea {
   .sidebar-card { position: static; }
 
   .confirmation-grid { grid-template-columns: 1fr; }
+
+  .calendar-popover {
+    width: min(300px, calc(100vw - 16px));
+    padding: 10px;
+  }
+
+  .form-group select,
+  .dropdown-select-trigger,
+  .form-group input[type="date"] {
+    font-size: 0.88rem;
+    padding: 8px 10px;
+  }
 }

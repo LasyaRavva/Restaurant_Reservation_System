@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import CalendarPicker from '../components/common/CalendarPicker'
+import DropdownSelect from '../components/common/DropdownSelect'
 import { useRestaurant } from '../hooks/useRestaurants'
 import { useReservations } from '../hooks/useReservations'
 import { patchJson, postJson } from '../lib/api'
@@ -197,8 +199,6 @@ export default function BookingPage() {
     setLoading(false)
   }
 
-  const today = new Date().toISOString().split('T')[0]
-
   return (
     <main className="booking-page">
       <div className="booking-card">
@@ -213,22 +213,23 @@ export default function BookingPage() {
           <div className="form-row">
             <div className="form-group">
               <label>Date</label>
-              <input
-                type="date"
-                name="date"
-                min={today}
+              <CalendarPicker
                 value={form.date}
-                onChange={handleChange}
-                required
+                minDate={new Date().toISOString().split('T')[0]}
+                onChange={date => setForm(prev => ({ ...prev, date }))}
               />
             </div>
             <div className="form-group">
               <label>Party size</label>
-              <select name="party_size" value={form.party_size} onChange={handleChange}>
-                {[1,2,3,4,5,6,7,8,10,12].map(n => (
-                  <option key={n} value={n}>{n} {n === 1 ? 'person' : 'people'}</option>
-                ))}
-              </select>
+              <DropdownSelect
+                value={form.party_size}
+                placeholder="Select party size"
+                options={[1,2,3,4,5,6,7,8,10,12].map(n => ({
+                  value: n,
+                  label: `${n} ${n === 1 ? 'person' : 'people'}`
+                }))}
+                onChange={value => setForm(prev => ({ ...prev, party_size: Number(value) }))}
+              />
             </div>
           </div>
 
@@ -261,10 +262,15 @@ export default function BookingPage() {
 
           <div className="form-group">
             <label>Payment method</label>
-            <select name="payment_provider" value={form.payment_provider} onChange={handleChange}>
-              <option value="stripe">Stripe</option>
-              <option value="razorpay">Razorpay</option>
-            </select>
+            <DropdownSelect
+              value={form.payment_provider}
+              placeholder="Select payment method"
+              options={[
+                { value: 'stripe', label: 'Stripe' },
+                { value: 'razorpay', label: 'Razorpay' }
+              ]}
+              onChange={value => setForm(prev => ({ ...prev, payment_provider: value }))}
+            />
             <p className="form-help">
               A deposit of {RESERVATION_DEPOSIT_PER_GUEST} per guest will be collected before confirmation.
             </p>
