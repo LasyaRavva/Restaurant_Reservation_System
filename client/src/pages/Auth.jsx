@@ -7,6 +7,7 @@ export default function Auth() {
   const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(true)
   const [form, setForm] = useState({ name: '', email: '', password: '' })
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
 
@@ -94,15 +95,38 @@ export default function Auth() {
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input
-              name="password"
-              type="password"
-              placeholder="Min. 6 characters"
-              value={form.password}
-              onChange={handleChange}
-              required
-              minLength={6}
-            />
+            <div className="password-field">
+              <input
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Min. 6 characters"
+                value={form.password}
+                onChange={handleChange}
+                required
+                minLength={6}
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowPassword(prev => !prev)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                title={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3.98 8.223A11.3 11.3 0 0 0 2 12s3.5 7 10 7a9.8 9.8 0 0 0 3.266-.56" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M6.22 6.22A10.9 10.9 0 0 1 12 5c6.5 0 10 7 10 7a19.3 19.3 0 0 1-2.048 2.998" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M9.88 9.88a3 3 0 0 0 4.24 4.24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="m4 4 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                ) : (
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" strokeWidth="1.8" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
           <button type="submit" className="btn-primary" disabled={loading}>
             {loading ? 'Please wait...' : isLogin ? 'Sign in' : 'Create account'}

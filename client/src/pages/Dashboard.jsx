@@ -38,6 +38,15 @@ export default function Dashboard() {
             </div>
           </Link>
         )}
+        {isAdmin && (
+          <Link to="/admin/reservations/analytics" className="dash-link-card">
+            <span className="dash-link-icon">RS</span>
+            <div>
+              <strong>My reservation analytics</strong>
+              <p>Open booking trends, status totals, and table demand.</p>
+            </div>
+          </Link>
+        )}
         <Link to="/dashboard/profile" className="dash-link-card">
           <span className="dash-link-icon">👤</span>
           <div>
