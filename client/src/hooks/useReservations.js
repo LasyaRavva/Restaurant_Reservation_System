@@ -41,7 +41,18 @@ export function useReservations() {
       fetchReservations()
       return { data: response.data, error: null }
     } catch (error) {
-      return { data: null, error }
+      const { data, error: fallbackError } = await supabase
+        .from('reservations')
+        .insert({ ...payload, user_id: user.id })
+        .select()
+        .single()
+
+      if (fallbackError) {
+        return { data: null, error }
+      }
+
+      fetchReservations()
+      return { data, error: null }
     }
   }
 

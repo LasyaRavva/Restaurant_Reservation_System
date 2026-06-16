@@ -4,6 +4,8 @@ import helmet from 'helmet'
 import morgan from 'morgan'
 import { env } from './config/env.js'
 import routes from './routes/index.js'
+import reservationRoutes from './routes/reservationRoutes.js'
+import paymentRoutes from './routes/paymentRoutes.js'
 import { notFound } from './middleware/notFound.js'
 import { errorHandler } from './middleware/errorHandler.js'
 
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'))
 
 app.use('/api', routes)
+app.use('/reservations', reservationRoutes)
+app.use('/payments', paymentRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

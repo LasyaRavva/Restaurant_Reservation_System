@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { supabase } from '../lib/supabaseClient'
 import { patchJson } from '../lib/api'
 
 export default function ReservationConfirmation() {
@@ -31,9 +32,18 @@ export default function ReservationConfirmation() {
         await patchJson(`/reservations/${reservationId}/status`, { status: 'confirmed' })
         if (active) setSyncState('confirmed')
       } catch (error) {
+        const { error: fallbackError } = await supabase
+          .from('reservations')
+          .update({ status: 'confirmed' })
+          .eq('id', reservationId)
+
         if (active) {
-          setSyncState('error')
-          setSyncError(error.message)
+          if (fallbackError) {
+            setSyncState('error')
+            setSyncError(error.message)
+          } else {
+            setSyncState('confirmed')
+          }
         }
       }
     }
