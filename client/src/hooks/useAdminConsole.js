@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabaseClient'
 import { useAuth } from '../context/AuthContext'
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+const API_ROOT = API_BASE.replace(/\/+$/, '').endsWith('/api') ? API_BASE.replace(/\/+$/, '') : `${API_BASE.replace(/\/+$/, '')}/api`
 
 export function useAdminConsole() {
   const { user, isAdmin } = useAuth()
@@ -162,7 +163,7 @@ export function useAdminConsole() {
     let error = null
 
     try {
-      const response = await fetch(`${API_BASE}/reservations/${id}/status`, {
+      const response = await fetch(`${API_ROOT}/reservations/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'

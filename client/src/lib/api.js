@@ -1,4 +1,9 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+function normalizeApiBase(value) {
+  const base = (value || 'http://localhost:5000').replace(/\/+$/, '')
+  return base.endsWith('/api') ? base : `${base}/api`
+}
+
+const API_BASE = normalizeApiBase(import.meta.env.VITE_API_URL)
 
 async function readResponse(response) {
   const payload = await response.json().catch(() => null)
