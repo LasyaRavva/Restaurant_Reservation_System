@@ -6,7 +6,7 @@ const router = Router()
 app.use(cors({
   origin: (origin, callback) => {
     const allowed = [
-      "https://restaurant-reservation-system-fw3s.vercel.app/",
+      "https://restaurant-reservation-system-fw3s.vercel.app",
       "http://localhost:5173",
     ];
     // Allow requests with no origin (mobile apps, curl, etc.)
